@@ -58,13 +58,13 @@ class Smarty_Internal_Write_File {
             // rename tmp file
             $success = @rename($_tmp_file, $_filepath);
         } else {
-            // rename tmp file
-            $success = @rename($_tmp_file, $_filepath);
-            if (!$success) {
-                // remove original file
-                @unlink($_filepath);
                 // rename tmp file
                 $success = @rename($_tmp_file, $_filepath);
+                if (!$success) {
+                    // remove original file
+                    @unlink($_filepath);
+                    // rename tmp file
+                    $success = @rename($_tmp_file, $_filepath);
             }
         }
 

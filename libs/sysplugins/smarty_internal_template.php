@@ -192,7 +192,6 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase {
             }
             throw $e;
         }
-//var_dump(apc_delete_file('/var/tmp/cms4/templates_c.65de434a/586984437f17d623a00af085951c323fe4f1ca35.file.afterHeader.tpl.php'));die(__LINE__.':'.__FILE__);
         // compiling succeded
         if (!$this->source->recompiled && $this->compiler->write_compiled_code) {
             // write compiled template
@@ -200,15 +199,12 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase {
             if ($_filepath === false)
                 throw new SmartyException('getCompiledFilepath() did not return a destination to save the compiled template to');
 
-            Smarty_Internal_Write_File::writeFile($_filepath, $code, $this->smarty);
-
-            if (extension_loaded('apc') && ini_get('apc.enabled')) {
-                $deletedFile = apc_delete_file($_filepath);
-                file_put_contents(
-                    '/vagrant-tmp/smarty.log',
-                    sprintf("DF: %d FP: %s\n", $deletedFile, $_filepath),
-                    FILE_APPEND
-                );
+            $stat = @stat($_filepath);
+            if ($stat === false || time() - $stat['mtime'] > 15 ) {
+                $written = Smarty_Internal_Write_File::writeFile($_filepath, $code, $this->smarty);
+                if ($stat !== false && $written && extension_loaded('apc') && ini_get('apc.enabled')) {
+                    apc_delete_file($_filepath);
+                }
             }
 
             $this->compiled->exists = true;
