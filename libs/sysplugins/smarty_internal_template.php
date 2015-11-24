@@ -202,7 +202,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase {
             $stat = @stat($_filepath);
             if ($stat === false || time() - $stat['mtime'] > 15 ) {
                 $written = Smarty_Internal_Write_File::writeFile($_filepath, $code, $this->smarty);
-                if ($stat !== false && $written && extension_loaded('apc') && ini_get('apc.enabled')) {
+                if ($stat !== false && $written && extension_loaded('apc') && !extension_loaded('apcu') && ini_get('apc.enabled')) {
                     apc_delete_file($_filepath);
                 }
             }
