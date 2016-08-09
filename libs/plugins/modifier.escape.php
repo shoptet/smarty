@@ -181,6 +181,9 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = null, $
             return $return;
 
         default:
+            if (\Miscellaneous_Helper_Development::isOnVagrant()) {
+                throw new \RuntimeException("Unsupported escape type modifier: `$esc_type`");
+            }
             return $string;
     }
 }
