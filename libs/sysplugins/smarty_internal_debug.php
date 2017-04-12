@@ -105,7 +105,7 @@ class Smarty_Internal_Debug extends Smarty_Internal_Data {
             $smarty = clone $obj->smarty;
         }
         $_assigned_vars = $ptr->tpl_vars;
-        ksort($_assigned_vars);
+        //ksort($_assigned_vars);
         $_config_vars = $ptr->config_vars;
         ksort($_config_vars);
         $smarty->registered_filters = array();
@@ -121,6 +121,16 @@ class Smarty_Internal_Debug extends Smarty_Internal_Data {
         $_template->disableSecurity();
         $_template->cache_id = null;
         $_template->compile_id = null;
+
+        $_grouped_assigned_vars = array();
+        foreach ($_assigned_vars as $key => $assignedVar) {
+            $_grouped_assigned_vars[$assignedVar->scope][$key] = $assignedVar;
+        }
+
+        foreach ($_grouped_assigned_vars as $group=>$value) {
+            ksort($_grouped_assigned_vars[$group]);
+        }
+
         if ($obj instanceof Smarty_Internal_Template) {
             $_template->assign('template_name', $obj->source->type . ':' . $obj->source->name);
         }
@@ -130,6 +140,7 @@ class Smarty_Internal_Debug extends Smarty_Internal_Data {
             $_template->assign('template_data', null);
         }
         $_template->assign('assigned_vars', $_assigned_vars);
+        $_template->assign('grouped_assigned_vars', $_grouped_assigned_vars);
         $_template->assign('config_vars', $_config_vars);
         $_template->assign('execution_time', microtime(true) - $smarty->start_time);
         echo $_template->fetch();
