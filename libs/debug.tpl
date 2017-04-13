@@ -94,7 +94,7 @@
         z-index: 999998;
         left: 0;
         bottom: 0;
-        width: 80%;
+        width: 100%;
         height: 100%;
         padding: 10px 10px 87px;
         overflow: auto;
@@ -112,6 +112,16 @@
     }
     .smartyDebugConsoleFilename {
         display: block;
+    }
+    @media (min-width: 1024px) {
+        .smartyDebugConsole {
+            width: 80%;
+        }
+    }
+    @media (min-width: 1200px) {
+        .smartyDebugConsole {
+            width: 50%;
+        }
     }
 </style>
 <script>
