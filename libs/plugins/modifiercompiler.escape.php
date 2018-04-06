@@ -102,9 +102,9 @@ function smarty_modifiercompiler_escape($params, $compiler)
                 // escape unescaped single quotes
                 return 'preg_replace("%(?<!\\\\\\\\)\'%", "\\\'",' . $params[0] . ')';
 
+            case 'js':
             case 'javascript':
-                // escape quotes and backslashes, newlines, etc.
-                return 'strtr(' . $params[0] . ', array("\\\\" => "\\\\\\\\", "\'" => "\\\\\'", "\"" => "\\\\\"", "\\r" => "\\\\r", "\\n" => "\\\n", "</" => "<\/" ))';
+                return 'substr(json_encode(' . (string) $params[0] . '), 1, -1)';
 
         }
     } catch(SmartyException $e) {

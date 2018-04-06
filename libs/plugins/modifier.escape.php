@@ -141,10 +141,6 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = null, $
             }
             return $return;
 
-        case 'javascript':
-            // escape quotes and backslashes, newlines, etc.
-            return strtr($string, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));
-
         case 'mail':
             if (Smarty::$_MBSTRING) {
                 require_once(SMARTY_PLUGINS_DIR . 'shared.mb_str_replace.php');
