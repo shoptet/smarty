@@ -102,11 +102,17 @@ function smarty_modifiercompiler_escape($params, $compiler)
                 // escape unescaped single quotes
                 return 'preg_replace("%(?<!\\\\\\\\)\'%", "\\\'",' . $params[0] . ')';
 
-            case 'js':
-            case 'javascript':
-                // escape quotes and backslashes, newlines, etc.
+            case 'jsa':
+                // escapes JS value enclosed in apostrophes
+                return 'strtr(' . $params[0] . ', array("\\\\" => "\\\\\\\\", "\'" => "\\\\\'", "\\r" => "\\\\r", "\\n" => "\\\n", "</" => "<\/" ))';
+
+            case 'jsq':
+                // escapes JS value enclosed in quotes
                 return 'strtr(' . $params[0] . ', array("\\\\" => "\\\\\\\\", "\"" => "\\\\\"", "\\r" => "\\\\r", "\\n" => "\\\n", "</" => "<\/" ))';
 
+            case 'javascript':
+                // escape quotes and backslashes, newlines, etc.
+                return 'strtr(' . $params[0] . ', array("\\\\" => "\\\\\\\\", "\'" => "\\\\\'", "\"" => "\\\\\"", "\\r" => "\\\\r", "\\n" => "\\\n", "</" => "<\/" ))';
         }
     } catch(SmartyException $e) {
         // pass through to regular plugin fallback
