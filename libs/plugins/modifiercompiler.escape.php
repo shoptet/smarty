@@ -104,7 +104,8 @@ function smarty_modifiercompiler_escape($params, $compiler)
 
             case 'js':
             case 'javascript':
-                return 'substr(json_encode(' . (string) $params[0] . '), 1, -1)';
+                // escape quotes and backslashes, newlines, etc.
+                return 'strtr(' . $params[0] . ', array("\\\\" => "\\\\\\\\", "\"" => "\\\\\"", "\\r" => "\\\\r", "\\n" => "\\\n", "</" => "<\/" ))';
 
         }
     } catch(SmartyException $e) {
