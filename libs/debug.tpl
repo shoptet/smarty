@@ -155,7 +155,7 @@
 <h2>Included templates &amp; config files (load time in seconds)</h2>
 
 {foreach $template_data as $template}
-  <span class="smartyDebugConsoleFilename">{$template.name}</span>
+  <span class="smartyDebugConsoleFilename"><a href="editor://open/?file={$template.name}">{$template.name}</a></span>
   <p class="gray">
       compile <span class="smartyDebugConsoleTime">{$template['compile_time']|string_format:"%.5f"}</span>
       / render <span class="smartyDebugConsoleTime">{$template['render_time']|string_format:"%.5f"}</span>
