@@ -113,6 +113,9 @@
     .smartyDebugConsoleFilename {
         display: block;
     }
+    .smartyDebugConsoleFilename a {
+        color: #fff;
+    }
     @media (min-width: 1024px) {
         .smartyDebugConsole {
             width: 80%;
