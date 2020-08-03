@@ -198,5 +198,4 @@
 {/if}
 </div>
 {/capture}
-{$debug_output}
-
+{$debug_output nofilter}
