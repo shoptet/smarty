@@ -1,6 +1,5 @@
 {capture name='_smarty_debug' assign=debug_output}
-<div class="smartyDebugConsoleTrigger">Smarty debug console</div>
-<div class="smartyDebugConsole">
+<div class="smartyDebugConsoleTrigger">Smarty debug console</div><div class="smartyDebugConsole">
 {literal}
     <style type="text/css">
 
@@ -94,6 +93,7 @@
         z-index: 999998;
         left: 0;
         bottom: 0;
+        box-sizing: border-box;
         width: 100%;
         height: 100%;
         padding: 10px 10px 87px;
@@ -121,26 +121,31 @@
             width: 80%;
         }
     }
-    @media (min-width: 1200px) {
-        .smartyDebugConsole {
-            width: 50%;
-        }
-    }
 </style>
 <script>
-    $(function() {
-        var i = 1;
-        $('.smartyDebugConsoleTrigger').each(function() {
-            $(this).text('Smarty debug console ' + i);
-            $(this).addClass('trigger' + i);
-            i++;
-        });
-        $('.smartyDebugConsoleTrigger').unbind().bind('click', function() {
-            $('.smartyDebugConsole').not($(this).next('.smartyDebugConsole')).removeClass('active');
-            $(this).next('.smartyDebugConsole').toggleClass('active');
-            $('.smartyDebugConsoleTrigger').not($(this)).removeClass('active');
-            $(this).toggleClass('active');
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof window.debugSetUp === 'undefined') {
+            window.debugSetUp = true;
+            var triggers = document.querySelectorAll('.smartyDebugConsoleTrigger');
+            for (var i = 0; i < triggers.length; i++) {
+                var trigger = triggers[i];
+                trigger.innerHTML = trigger.innerHTML + ' ' + (i + 1);
+                trigger.classList.add('trigger' + (i + 1));
+                trigger.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var active = e.target.classList.contains('active');
+                    var triggers = document.querySelectorAll('.smartyDebugConsoleTrigger');
+                    for (var i = 0; i < triggers.length; i++) {
+                        triggers[i].nextSibling.classList.remove('active');
+                        triggers[i].classList.remove('active');
+                    }
+                    if (!active) {
+                        e.target.classList.add('active');
+                        e.target.nextSibling.classList.add('active');
+                    }
+                });
+            }
+        }
     });
 </script>
 {/literal}
