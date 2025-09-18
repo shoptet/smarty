@@ -321,6 +321,11 @@ abstract class Smarty_Internal_TemplateCompilerBase
     public $_cache = array();
 
     /**
+     * @var array
+     */
+    public static array $phpFunctionNames = [];
+
+    /**
      * Lexer preg pattern for left delimiter
      *
      * @var string
@@ -640,6 +645,14 @@ abstract class Smarty_Internal_TemplateCompilerBase
                         return $func_name . '(' . $parameter[ 0 ] . ')';
                     }
                 } else {
+                    if (isset(self::$phpFunctionNames[$func_name])) {
+                        $name = self::$phpFunctionNames[$func_name];
+
+                        if (is_array($name)) {
+                            $name = implode('::', $name);
+                        }
+                    }
+
                     return $name . '(' . implode(',', $parameter) . ')';
                 }
             } else {
